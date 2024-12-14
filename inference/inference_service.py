@@ -4,8 +4,8 @@ import joblib
 from inference.model_loader import load_model
 
 FEATURE_COLUMNS = [
-    "fixed_acidity", "volatile_acidity", "citric_acid", "residual_sugar",
-    "chlorides", "free_sulfur_dioxide", "total_sulfur_dioxide", "density",
+    "fixed acidity", "volatile acidity", "citric acid", "residual sugar",
+    "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density",
     "pH", "sulphates", "alcohol"
 ]
 
@@ -20,9 +20,7 @@ def make_prediction(data: dict):
     {
         "features": [7.4, 0.7, 0.0, 1.9, 0.076, 11.0, 34.0, 0.9978, 3.51, 0.56, 9.4]
     }
-    Where, each index signifies:
-    1.fixed_acidity, 2. volatile_acidity, 3. citric_acid, 4.residual_sugar, 5.chlorides, 6.free_sulfur_dioxide, 7.total_sulfur_dioxide, 8.density, 9.pH, 10.sulphates, 11.alcohol
-    
+
     Returns the prediction as a list.
     """
     try:
@@ -31,7 +29,12 @@ def make_prediction(data: dict):
             raise KeyError("Missing 'features' key in input data.")
         
         # Extract features from input
-        features = np.array(data["features"]).reshape(1, -1)
+        features = np.array(data["features"])
+
+        # Validate 'features' is a list
+        if not isinstance(features, list):
+            raise ValueError("Expected 'features' to be a list.")
+
          # Validate feature length
         if len(features) != len(FEATURE_COLUMNS):
             raise ValueError(f"Expected {len(FEATURE_COLUMNS)} features, got {len(features)}.")
